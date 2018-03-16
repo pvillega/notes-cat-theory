@@ -1,6 +1,7 @@
-# practical-cat-theory #
+# Practical Category Theory
 
-Welcome to practical-cat-theory!
+This repository contains examples and code related to category theory constructs in Scala. The aim is to build a better mental model on when can you apply Category theory concepts on everyday activities.
+
 
 ## Contribution policy ##
 
