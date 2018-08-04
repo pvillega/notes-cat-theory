@@ -9,8 +9,10 @@ lazy val `practical-cat-theory` =
     .settings(settings)
     .settings(
       libraryDependencies ++= Seq(
+        library.cats,
+        library.catsEffect,
         library.scalaCheck % Test,
-        library.utest      % Test
+        library.scalaTest      % Test
       )
     )
 
@@ -21,11 +23,15 @@ lazy val `practical-cat-theory` =
 lazy val library =
   new {
     object Version {
+      val cats = "1.2.0"
+      val catsEffect = "1.0.0-RC2"
       val scalaCheck = "1.13.5"
-      val utest      = "0.6.3"
+      val scalaTest = "3.0.5"
     }
-    val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
-    val utest      = "com.lihaoyi"    %% "utest"      % Version.utest
+    val cats       = "org.typelevel"  %% "cats-core"   % Version.cats
+    val catsEffect = "org.typelevel"  %% "cats-effect" % Version.catsEffect
+    val scalaCheck = "org.scalacheck" %% "scalacheck"  % Version.scalaCheck
+    val scalaTest  = "org.scalatest"  %% "scalatest"   % Version.scalaTest
   }
 
 // *****************************************************************************
@@ -51,12 +57,11 @@ lazy val commonSettings =
       "-target:jvm-1.8",
       "-encoding", "UTF-8",
       "-Ypartial-unification",
-      "-Ywarn-unused-import"
+      "-Ywarn-unused-import",
+      "-Xfatal-warnings"
     ),
     Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
-    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value),
-    testFrameworks += new TestFramework("utest.runner.Framework"),
-    wartremoverWarnings in (Compile, compile) ++= Warts.unsafe
+    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)
 )
 
 lazy val scalafmtSettings =
