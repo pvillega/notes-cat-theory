@@ -42,16 +42,14 @@ object FunctorInfo {
   // by taking advantage of Functor composition, we can build more readable code, like:
   def properMap: List[Option[Int]] = Functor[List].compose[Option].map(uglyList)(_ * 2)
 
-
   // Functors can lift functions so we can apply them to a Functor's content. For example given:
   def lenght(s: String): Int = s.length
-  val myVal = Some("value")
+  val myVal                  = Some("value")
   // we can't apply 'length' directly to 'myVal' as types don't match. But we can lift the function as follows:
   val newLenght: Option[String] ⇒ Option[Int] = Functor[Option].lift(lenght)
   newLenght(myVal)
   // Lifting wraps input and output parameters in F[_] so we cna now use our F[_] as input.
   // What if we have multiple parameters in the function to lift? See Applicative.
-
 
   // Contravariant Functor, provides an operati􏰀on called contramap that represents “prepending”
   // an operati􏰀on to a chain.
