@@ -21,6 +21,13 @@ import cats.implicits._
 
 object ApplicativeInfo {
 
+  // Applicative Functor is typeclass that wraps values in an F[_] and provides operations that can be applied to several of these
+  // values at once. It is a good tool for parallel operations, in contrast to Monads which enforce sequencing.
+
+  // Applicative extends Apply, adding a new methods 'pure' to wrap a value in F[_]:
+  Applicative[Option].pure(1) // Some(1)
+
+  // This means Applicative provides 'ap'. See below.
   // We can use Applicative to lift functions to be applied in an Applicative context, similar to what we do with Functors
   // For example:
   def lenght(s: String): Int = s.length
