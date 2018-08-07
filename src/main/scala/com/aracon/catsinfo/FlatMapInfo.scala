@@ -34,6 +34,7 @@ object FlatMapInfo {
   //        def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
   // show that we can use the contents of F[A] to generate a new F[B]. This implies we need a full
   // F[A] before we can call 'f', creating a definite sequence in the Effects.
+  //
   // See MonadInfo for more details
 
   // Examples:
