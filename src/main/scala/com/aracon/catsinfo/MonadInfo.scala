@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018 Pere Villega
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.aracon.catsinfo
 
 import cats._
@@ -26,7 +42,7 @@ object MonadInfo {
 
   // Monad inherits from Applicative (which inherits from Functor) and from FlatMap. This means Monad has methods
   // like 'map' or 'ap' or 'compose' available.
-  Monad[Option].compose[List].map(Option(List(1,2)))(a ⇒ a + 1) // Option(List(2,3))
+  Monad[Option].compose[List].map(Option(List(1, 2)))(a ⇒ a + 1) // Option(List(2,3))
 
   // Useful Monads:
   // Id -  Id allows us to call our monadic method using plain values. It's a type (Id[A]) for which Cats provides
@@ -42,7 +58,9 @@ object MonadInfo {
   Either.fromOption(Option(1), "Left")
   Either.fromTry(Try(1))
   // Some other Either utils to validate data
-  (-1).asRight[String].ensure("Must be non-negative!")(_ > 0) // Either[String, Int] -> Returns: Left[String]
+  (-1)
+    .asRight[String]
+    .ensure("Must be non-negative!")(_ > 0) // Either[String, Int] -> Returns: Left[String]
   // And methods to 'recover' from an error if the Either we receive is a left
   "error".asLeft[Int].recover {
     case _: String => -1
@@ -51,7 +69,6 @@ object MonadInfo {
     case _: String => Right(-1)
   }
 
-
   // MonadError - MonadError that abstracts over Either-like data types that are used for error handling. MonadError
   // provides extra opera􏰀ons for raising and handling errors.
   // Examples:
@@ -59,7 +76,7 @@ object MonadInfo {
   val monadError: MonadError[ErrorOr, String] = MonadError[ErrorOr, String]
 
   val error = monadError.raiseError("error") // Left[String]
-  monadError.handleError(error)(_ ⇒ "handled") // for error recovery. Had a monadic 'handleErrorWith' equivalent
+  monadError.handleError(error)(_ ⇒ "handled")                       // for error recovery. Had a monadic 'handleErrorWith' equivalent
   monadError.ensure(monadError.pure(1))("Number too low!")(_ > 1000) // Returns LEft[String], predicate failed to verify
 
   // Eval - Eval is a monad for memoization of results. It has 3 subtypes: Now, Always, Later
@@ -67,19 +84,17 @@ object MonadInfo {
   // Always - lazy and non memoized computation, like a 'def' in scala
   // Later - lazy and memoized computation, like a 'lazy val'
   // When you call .eval in an Eval[] all the intermediate operations are run, as per behaviour defined above
-  val greeting: Eval[String] = Eval.
-    always { println("Step 1"); "Hello" }.
-    map { str => println("Step 2"); s"$str world" }
+  val greeting: Eval[String] = Eval.always { println("Step 1"); "Hello" }.map { str =>
+    println("Step 2"); s"$str world"
+  }
   greeting.value
   // Eval has a 'memoize' method that allows us to memoize a chain of computati􏰀ons. The result of the chain up to the
   // call is cached, while later operations revert to their own behaviour
-  val greeting: Eval[String] = Eval.
-    always { println("Step 1"); "Hello" }.
-    memoize.
-    map { str => println("Step 2"); s"$str world" }
+  val greeting2: Eval[String] = Eval.always { println("Step 1"); "Hello" }.memoize.map { str =>
+    println("Step 2"); s"$str world"
+  }
   // Eval has a 'defer' method that allows us to delay execution of a function until it is requested. Is like a Lazy
   // but it takes an Eval as parameter, so we can help managing stack/recursion in methods.
-
 
   // Writer - Writer is a monad that lets us carry a log along with a computati􏰀on.
   // A common use case is to store logs of threaded computations so each computation contains the logs and we get the right
