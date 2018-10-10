@@ -17,7 +17,6 @@
 package com.aracon.catsinfo
 
 import cats._
-import cats.implicits._
 
 object TraverseInfo {
 
