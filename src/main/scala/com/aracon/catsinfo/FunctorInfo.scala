@@ -55,7 +55,7 @@ object FunctorInfo {
   // an operati􏰀on to a chain.
   // Contramap method only makes sense for data types that represent transformati􏰂ons. Option has
   // no contramap because there is no way of feeding a value in an Option[B] backwards through a
-  // functi􏰀on A => B.
+  // functi􏰀on B => A.
   // For example printable:
   trait Printable[A] {
     def format(value: A): String

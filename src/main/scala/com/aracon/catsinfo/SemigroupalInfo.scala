@@ -24,6 +24,8 @@ object SemigroupalInfo {
   // Not to be confused with Semigroup
   // Semigroupal provides a 'product' operation that does Cartesian products with the elements in our F[_]
   // That is, given F[A] and F[B] you get F[(A, B)]
+  // Note this means if a param is a 'zero' (None, Nil) the result will be 'zero' as we are doing a product
+  // It doesn't impose any order of execution, so both parameters can be evaluated in any order, enabling parallelism
 
   // Examples:
   Semigroupal[Option].product(1.some, 2.some) // Some((1, 2))

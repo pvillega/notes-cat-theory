@@ -68,6 +68,4 @@ object PropertiesInfo {
   // Ordering: order of 2 elements is closed, associative, id (say always elements are the same, no order is modified), and idempotent. But not commutative.
   // As a results, we know Ordering is a Monoid (Idempotent Monoid), we can use that abstraction to both test it and implement behaviour.
 
-  //
-
 }
