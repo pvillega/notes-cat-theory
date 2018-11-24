@@ -16,10 +16,12 @@
 
 package com.aracon.modeling
 
-import cats._
 import cats.data.Const
 import cats.effect.IO
+import cats._
 import cats.implicits._
+
+import scala.collection.mutable
 
 object TaglessFinalInfo {
 
@@ -40,7 +42,14 @@ object TaglessFinalInfo {
     def get(key: String): F[Option[String]]
     def put(key: String, value: String): F[Unit]
   }
-  val interp: KvStore[IO] = ???
+  val interp: KvStore[Id] = new KvStore[Id] {
+    // bad code, mutable map, we should use Ref but just for the sake of having this compile
+    private val innerMap = mutable.Map[String, String]()
+
+    override def get(key: String): Id[Option[String]]      = innerMap.get(key)
+    override def put(key: String, value: String): Id[Unit] = innerMap.put(key, value)
+  }
+
   // program first does puts then gets on the store
   def program[F[_]: Applicative](gets: List[String],
                                  puts: List[(String, String)])(F: KvStore[F]): F[List[String]] =
@@ -57,7 +66,15 @@ object TaglessFinalInfo {
     def put(key: String, value: String): Const[KvStoreInfo, Unit] =
       Const(KvStoreInfo(Set.empty, Map(key → value)))
   }
-  // we can already run this program to get our KvStoreInfo
+
+  // we can already run this program to get our KvStoreInfo. We need an implicit applicative for this to compile
+  implicit val APP = new Applicative[Const[KvStoreInfo, ?]] {
+    override def pure[A](x: A): Const[KvStoreInfo, A] = Const(KvStoreInfo(Set.empty, Map.empty))
+
+    override def ap[A, B](ff: Const[KvStoreInfo, A ⇒ B])(
+        fa: Const[KvStoreInfo, A]
+    ): Const[KvStoreInfo, B] = fa.retag[B]
+  }
   val gs                         = Nil
   val ps: List[(String, String)] = Nil
   val info: KvStoreInfo          = program(gs, ps)(extractor).getConst
@@ -66,16 +83,20 @@ object TaglessFinalInfo {
   val optimisedInterp =
     info.gets
       .filterNot(info.puts.contains)
-      .parTraverse(key ⇒ interp.get(key).map(_.map(s ⇒ (key, s))))
+      .toList
+      .traverse { key ⇒
+        val opt: Option[String] = interp.get(key)
+        List(opt.map(s ⇒ (key, s)))
+      }
       .map { list: List[Option[(String, String)]] ⇒
         val table = list.flatten.toMap
         new KvStore[IO] {
           def get(key: String): IO[Option[String]] =
             table.get(key).orElse(info.puts.get(key)) match {
               case Some(a) ⇒ Option(a).pure[IO]
-              case None    ⇒ interp.get(key) // should never happen but just in case
+              case None    ⇒ interp.get(key).pure[IO] // should never happen but just in case
             }
-          def put(key: String, value: String): IO[Unit] = interp.put(key, value)
+          def put(key: String, value: String): IO[Unit] = interp.put(key, value).pure[IO]
 
         }
 
