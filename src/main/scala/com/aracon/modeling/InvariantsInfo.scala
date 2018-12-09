@@ -18,6 +18,7 @@ package com.aracon.modeling
 
 object InvariantsInfo {
   // An invariant is a requirement that must hold for the data to have meaning. How to enforce them in Scala?
+  // NOTE: Remember all this happens at compile time, no runtime penalty!
 
   // If we have an ADT (NOTE: don't leave out the `extends Product with Serializable` part or all this won't work due to type inference!)
   sealed trait Parent extends Product with Serializable
@@ -51,6 +52,9 @@ object InvariantsInfo {
   ) =
     ???
 
-  bothTypesAlsoForReal(A, B) // Fails compilation
+  // bothTypesAlsoForReal(A, B) // Fails compilation
   bothTypesAlsoForReal(A, A) // Compiles
+
+  // but if, somehow, we got our types converted to `Parent` before the call, that would also work, so it may be safer to use the previous alternative.
+
 }
