@@ -36,3 +36,6 @@ snapshots
 
 # jenv
 .java-version
+.metals/
+.bloop/
+
