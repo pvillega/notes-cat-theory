@@ -12,7 +12,10 @@ lazy val `practical-cat-theory` =
       libraryDependencies ++= Seq(
         library.cats,
         library.catsEffect,
+        library.monocleCore,
+        library.monocleMacro,
         library.shapeless,
+        library.monocleLaw % Test,
         library.scalaCheck % Test,
         library.scalaTest  % Test
       )
@@ -27,12 +30,16 @@ lazy val library =
     object Version {
       val cats = "1.2.0"
       val catsEffect = "1.0.0-RC2"
+      val monocle = "1.5.0"
       val shapeless = "2.3.3"
       val scalaCheck = "1.13.5"
       val scalaTest = "3.0.5"
     }
     val cats       = "org.typelevel"  %% "cats-core"   % Version.cats
     val catsEffect = "org.typelevel"  %% "cats-effect" % Version.catsEffect
+    val monocleCore =  "com.github.julien-truffaut" %%  "monocle-core" % Version.monocle
+    val monocleMacro =  "com.github.julien-truffaut" %%  "monocle-macro" % Version.monocle
+    val monocleLaw =  "com.github.julien-truffaut" %%  "monocle-law" % Version.monocle
     val shapeless = "com.chuusai" %% "shapeless" % Version.shapeless
     val scalaCheck = "org.scalacheck" %% "scalacheck"  % Version.scalaCheck
     val scalaTest  = "org.scalatest"  %% "scalatest"   % Version.scalaTest
