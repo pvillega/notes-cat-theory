@@ -20,6 +20,22 @@ The same applies to functions. Build what you need. Try to keep them generic (F[
 
 Of course, with more experience you will start identifying ways to define types and functions that approach standard structures, and benefit more from this. But the aim is not to go from Category Theory to your data, but the other way around. 
 
+
+## Using GraalVM
+
+[GraalVM](https://www.graalvm.org) is a project that aims to speed up compilation and execution of JVM applications, like Scala code (among other languages)
+
+To use it to run `sbt`, use the following command:
+
+```bash
+$ sbt --java-home <graalvm_path> -XX:+UnlockExperimentalVMOptions -XX:+EnableJVMCI -XX:+UseJVMCICompiler 
+```
+
+Use the same set of flags when executing to take advantage of GraalVM optimizations.
+
+You can compile a Jar to native code with `<graalvm_path>/bin/native-image`, but beware as it may cause errors in some specific scenarios, which may require you refactoring the code to fix.
+
+
 ## Contribution policy ##
 
 Contributions via GitHub pull requests are gladly accepted from their original author. Along with
