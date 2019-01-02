@@ -184,8 +184,8 @@ class EmailRepositorySpecs extends FunSuite with ArbitraryInstances with Discipl
   // we ask to check all the laws for the given implementation
   checkAll("EmailRepository", EmailAlgebraTests(new EmailRepository).algebra)
 
-  // the following checks will fail as the implementation violates the laws
-  checkAll("EmailRepositoryWithErrors", EmailAlgebraTests(new EmailRepositoryWithErrors).algebra)
+  // the following checks would fail (if uncommented) as the implementation violates the laws
+  // checkAll("EmailRepositoryWithErrors", EmailAlgebraTests(new EmailRepositoryWithErrors).algebra)
 }
 
 final class EmailRepositoryWithErrors extends Emails[Id] {
