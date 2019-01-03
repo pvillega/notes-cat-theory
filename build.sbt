@@ -1,6 +1,8 @@
 // *****************************************************************************
 // Projects
 // *****************************************************************************
+resolvers += Resolver.sonatypeRepo("releases")
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.8")
 
 lazy val `practical-cat-theory` =
@@ -13,6 +15,8 @@ lazy val `practical-cat-theory` =
         library.cats,
         library.catsEffect,
         library.discipline,
+        library.droste,
+        library.drosteMacros,
         library.monocleCore,
         library.monocleMacro,
         library.shapeless,
@@ -33,15 +37,18 @@ lazy val library =
       val cats = "1.2.0"
       val catsEffect = "1.0.0-RC2"
       val discipline = "0.10.0"
+      val droste = "0.6.0"
       val monocle = "1.5.0"
       val shapeless = "2.3.3"
       val scalaCheck = "1.13.5"
       val scalaTest = "3.0.5"
     }
     val cats       = "org.typelevel"  %% "cats-core"   % Version.cats
-    val catsLaws       = "org.typelevel"  %% "cats-laws"   % Version.cats
+    val catsLaws   = "org.typelevel"  %% "cats-laws"   % Version.cats
     val catsEffect = "org.typelevel"  %% "cats-effect" % Version.catsEffect
     val discipline =  "org.typelevel" %% "discipline" % Version.discipline
+    val droste = "io.higherkindness" %% "droste-core"  % Version.droste
+    val drosteMacros = "io.higherkindness" %% "droste-macros"  % Version.droste
     val monocleCore =  "com.github.julien-truffaut" %%  "monocle-core" % Version.monocle
     val monocleMacro =  "com.github.julien-truffaut" %%  "monocle-macro" % Version.monocle
     val monocleLaw =  "com.github.julien-truffaut" %%  "monocle-law" % Version.monocle
