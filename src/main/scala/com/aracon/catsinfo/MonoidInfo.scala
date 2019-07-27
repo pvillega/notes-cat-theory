@@ -49,8 +49,8 @@ object MonoidInfo {
   // as reduce calls are made out of order. Thus, laws matter.
 
   // We can invoke monoid instances directly via apply, as usual with Cats:
-  Monoid[String].combine("Hi ", "there") // "Hi there"
-  Monoid[String].empty // ""
+  Monoid[String].combine("Hi ", "there")         // "Hi there"
+  Monoid[String].empty                           // ""
   Monoid[String].isEmpty("")                     // true
   Monoid[Option[Int]].combine(1.some, none[Int]) // Some(1)
 

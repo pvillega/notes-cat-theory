@@ -161,8 +161,8 @@ object LifeStore extends App {
     def cellString(value: Boolean): String = if (value) " X " else " . "
 
     val cells = plane.experiment[List] { _ =>
-      coords
-    } map cellString
+        coords
+      } map cellString
     cells.grouped(extent).map(_.mkString).mkString("\n")
   }
 
@@ -171,7 +171,7 @@ object LifeStore extends App {
     (2, 1) -> true,
     (0, 2) -> true,
     (1, 2) -> true,
-    (2, 2) -> true,
+    (2, 2) -> true
   )
 
   val blinker = Map(

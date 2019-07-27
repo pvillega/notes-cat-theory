@@ -58,7 +58,7 @@ object Arrows {
 
   //  With headK and lastK, we can obtain the Kleisli arrow we want by combining them, and composing it with _ + _:
   val headPlusLast = combine(headK, lastK) >>> Arrow[Kleisli[Option, ?, ?]]
-    .lift(((_: Int) + (_: Int)).tupled)
+      .lift(((_: Int) + (_: Int)).tupled)
 
   headPlusLast.run(List(2, 3, 5, 8))
   // res1: Option[Int] = Some(10)

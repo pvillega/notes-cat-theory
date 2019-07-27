@@ -106,8 +106,9 @@ object CoMonadInfo {
 
   // Generates a set of Zippers with the focus shifted, using the `cojoin` operation. In effect this creates multiple
   // levels for the tree. Then we use `map` and `grow` to differentiate the values on the focus for each level
-  def trees(input: StreamZipper[Int])(implicit CM: Comonad[StreamZipper],
-                                      F: Functor[StreamZipper]): StreamZipper[StreamZipper[Int]] =
+  def trees(
+      input: StreamZipper[Int]
+  )(implicit CM: Comonad[StreamZipper], F: Functor[StreamZipper]): StreamZipper[StreamZipper[Int]] =
     F.map(input.cojoin)(CM.coflatMap(_)(grow))
 
   // Only for visual clarity. We will have only 0 and 1 in the tree. We print 0 as whitespace. The blinking tree has more options

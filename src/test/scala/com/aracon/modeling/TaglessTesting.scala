@@ -26,8 +26,7 @@ import org.scalacheck.Gen._
 import org.scalacheck.Prop._
 import org.typelevel.discipline.Laws
 import org.typelevel.discipline.scalatest.Discipline
-import org.scalatest._
-
+import org.scalatest.funsuite.AnyFunSuite
 import scala.collection.mutable
 import scala.util.Random
 
@@ -125,11 +124,13 @@ trait EmailAlgebraTests[F[_]] extends Laws {
   def laws: EmailAlgebraLaws[F]
 
   // The ruleset contains all the laws to test. New laws are added here, making it simple to extend tests in the future
-  def algebra(implicit arbEmail: Arbitrary[Email],
-              arbEmailF: Arbitrary[Email => Email],
-              eqFBool: Eq[F[Boolean]],
-              eqFOptId: Eq[F[Option[Email]]],
-              eqFEither: Eq[F[Either[EmailAlreadyExists.type, Email]]]) =
+  def algebra(
+      implicit arbEmail: Arbitrary[Email],
+      arbEmailF: Arbitrary[Email => Email],
+      eqFBool: Eq[F[Boolean]],
+      eqFOptId: Eq[F[Option[Email]]],
+      eqFEither: Eq[F[Either[EmailAlreadyExists.type, Email]]]
+  ) =
     new SimpleRuleSet(
       name = "Emails",
       "find consistent with known" -> forAll(laws.findKnownConsistency _),
@@ -150,9 +151,9 @@ object EmailAlgebraTests {
 // We then define how to generate Emails, standard boilerplate when using property-based testing:
 trait ArbitraryInstances {
   final val MailGen: Gen[Email] = (for {
-    mailbox  <- nonEmptyListOf(alphaNumChar).map(_.mkString)
-    hostname <- nonEmptyListOf(alphaLowerChar).map(_.mkString)
-  } yield s"$mailbox@$hostname.com") suchThat (_.length <= 254) map (Email(_))
+      mailbox  <- nonEmptyListOf(alphaNumChar).map(_.mkString)
+      hostname <- nonEmptyListOf(alphaLowerChar).map(_.mkString)
+    } yield s"$mailbox@$hostname.com") suchThat (_.length <= 254) map (Email(_))
 
   implicit final val ArbitraryEmail: Arbitrary[Email] = Arbitrary(MailGen)
 
@@ -169,7 +170,7 @@ trait ArbitraryInstances {
 }
 
 // And finally we run the laws against our implementation:
-class EmailRepositorySpecs extends FunSuite with ArbitraryInstances with Discipline {
+class EmailRepositorySpecs extends AnyFunSuite with ArbitraryInstances with Discipline {
 
   // sorry but we can only know if 2 IO are equal after running them!
   implicit def eqIO[A: Eq]: Eq[IO[A]] = (fx: IO[A], fy: IO[A]) ⇒ {

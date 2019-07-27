@@ -21,6 +21,8 @@ import cats.implicits._
 import cats.effect._
 import cats.effect.concurrent._
 
+import scala.concurrent.ExecutionContext
+
 object DeferredInfo {
   // Deferred - A purely functional synchronization primitive which represents a single value which may not yet be available.
   // When created, a Deferred is empty. It can then be completed exactly once, and never be made empty again.
@@ -35,7 +37,8 @@ object DeferredInfo {
   // This way we ensure only the first value obtained is used, avoiding any possible concurrency issues.
 
   // Example from official documentation:
-  import scala.concurrent.ExecutionContext.Implicits.global
+  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
+  implicit val cs: ContextShift[IO] = IO.contextShift(ec)
 
   implicit val par: Parallel[IO, IO] = Parallel[IO, IO.Par].asInstanceOf[Parallel[IO, IO]]
 

@@ -60,7 +60,7 @@ object LensesInfo {
 
   // And composing them
   val composedLenses
-    : PLens[Employee, Employee, String, String] = company composeLens address composeLens street composeLens streetName
+      : PLens[Employee, Employee, String, String] = company composeLens address composeLens street composeLens streetName
 
   // We can modify the street name more easily
   composedLenses.modify(_.capitalize)(employee)

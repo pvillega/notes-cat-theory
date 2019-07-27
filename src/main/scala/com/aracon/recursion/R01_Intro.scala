@@ -16,8 +16,8 @@
 
 package com.aracon.recursion
 
-import qq.droste._
-import qq.droste.macros.deriveFixedPoint
+import higherkindness.droste._
+import higherkindness.droste.macros.deriveFixedPoint
 
 // See https://www.47deg.com/blog/basic-recursion-schemes-in-scala/
 // Recursion schemes are very relevant to FP, as they provide generalized folds, unfolds, and traversals for

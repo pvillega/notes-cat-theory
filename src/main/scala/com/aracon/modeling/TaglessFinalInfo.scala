@@ -51,8 +51,9 @@ object TaglessFinalInfo {
   }
 
   // program first does puts then gets on the store
-  def program[F[_]: Applicative](gets: List[String],
-                                 puts: List[(String, String)])(F: KvStore[F]): F[List[String]] =
+  def program[F[_]: Applicative](gets: List[String], puts: List[(String, String)])(
+      F: KvStore[F]
+  ): F[List[String]] =
     puts.traverse(t ⇒ F.put(t._1, t._2)) *> gets.traverse(F.get).map(_.flatten)
 
   // we could try to run this in parallel, or remove duplicates, or if we do a put and get with same key we don't need the get, we know the answer
